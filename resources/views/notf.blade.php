@@ -13,10 +13,11 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
         Pusher.logToConsole = true;
-        var pusher = new Pusher('8a91999ec2810bcf64b3', {
+        var pusher = new Pusher('33fb164cc6c0a6b54d94', {
             cluster: 'eu'
         });
-        var channel = pusher.subscribe('my-channel_'+"{{ Auth::guard('store')->user()->id }}");
+        var auth = "{{ Auth::guard('store')->user()->id }}";
+        var channel = pusher.subscribe('my-channel_' + auth);
         channel.bind('New-order', function(data) {
             data.relation.forEach(element => {
                 var rel = `<div class="dropdown-divider"></div>
@@ -28,7 +29,7 @@
                                 </div>
                                 <div class="preview-item-content">
                                     <p class="preview-subject mb-1">Notfay</p>
-                                    <p class="text-muted ellipsis mb-0">  `+ element.name + `</p>
+                                    <p class="text-muted ellipsis mb-0">  ` + element.name + `</p>
                                 </div>
                           </a>`;
                 $('#rel-time').prepend(rel)

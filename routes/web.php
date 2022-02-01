@@ -21,7 +21,7 @@ Route::get('/', function () {
 });
 
 Route::get('/n', function () {
-    $notifications = Auth::user()->notification;
+    $notifications = Auth::guard('store')->user()->notifications;
     return view('notf',compact('notifications'));
 });
 

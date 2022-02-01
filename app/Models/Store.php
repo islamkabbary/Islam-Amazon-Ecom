@@ -48,6 +48,26 @@ class Store extends Authenticatable implements JWTSubject
 
     public function notifications()
     {
-        return $this->morphToMany(Notification::class,'notificationable');
+        return $this->morphMany(Notification::class,'notificationable');
+    }
+
+    /**
+     * Get all of the senders for the Store
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function senders(): HasMany
+    {
+        return $this->hasMany(Chat::class, 'sender_id', 'id');
+    }
+
+    /**
+     * Get all of the recivers for the Store
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function recivers(): HasMany
+    {
+        return $this->hasMany(Chat::class, 'reciver_id', 'id');
     }
 }

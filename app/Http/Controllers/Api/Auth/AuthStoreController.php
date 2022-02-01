@@ -16,29 +16,29 @@ class AuthStoreController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    // public function login(Request $request)
-    // {
-    //     try {
-    //         if($token = Auth::guard('store')->attempt(['email' => $request->email , 'password' => $request->password])){
-    //             return $this->respondOk('login sucss');
-    //         }
-    //         return $this->respondError("Wrong Email or Password");
-    //     } catch (\Throwable $th) {
-    //         return $this->respondError($th->getMessage());
-    //     }
-    // }
-
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required'
-        ]);
-        $credentials = $request->except(['_token', 'remember']);
-        $supplier = Store::where(['email'=> $request->email]);
-        return Auth::guard('store')->attempt($credentials,true);
-        return redirect()->to('/')->with(['success' => 'Logged in successfully']);
+        try {
+            if($token = Auth::guard('store')->attempt(['email' => $request->email , 'password' => $request->password])){
+                // return $this->respondOk('login sucss');
+                return redirect()->to('/n');
+            }
+            return $this->respondError("Wrong Email or Password");
+        } catch (\Throwable $th) {
+            return $this->respondError($th->getMessage());
+        }
     }
+
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required',
+    //         'password' => 'required'
+    //     ]);
+    //     $credentials = $request->except(['_token', 'remember']);
+    //     $supplier = Store::where(['email'=> $request->email]);
+    //     return redirect()->to('/n');
+    // }
 
 
     /**

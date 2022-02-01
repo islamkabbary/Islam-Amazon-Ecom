@@ -182,12 +182,12 @@ class CartController extends Controller
                     $order->total += $product->price * $procart->pivot->qty;
                     $order->save();
                     $notifay = new Notification;
-                    $notifay->notificationable_type = "App\Moduls\Store";
+                    $notifay->notificationable_type = "App\Models\Store";
                     $notifay->notificationable_id = $product->store_id;
                     $notifay->title = 'New Order';
                     $notifay->body = "Product Name"." "."="." ".$product->name." ".'price'." ".'='." ". $procart->price .'qty'." ".'='." ". $procart->qty;
                     $notifay->save();
-                    event(new DeleteAllCartEvent());
+                    // event(new DeleteAllCartEvent());
                 }
                 event(new NotificationOrderToStore($order,$product->store_id));
                 DB::commit();
