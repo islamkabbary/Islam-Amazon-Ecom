@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthStoreController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +29,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/login-is', [AuthStoreController::class , 'login'])->name('postlogin');
+Route::get('/chat', [ChatController::class , 'chats']);
+Route::get('/chats/{id}', [ChatController::class , 'getUserChat'])->name('chats');
+Route::get('/send-message', [ChatController::class , 'sendMessages'])->name('sendMessages');

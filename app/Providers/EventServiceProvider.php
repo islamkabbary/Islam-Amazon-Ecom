@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\DeleteAllCartEvent;
+use App\Events\NotificationOrderToStore;
 use App\Listeners\MyEventToEventlistener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -18,6 +19,7 @@ class EventServiceProvider extends ServiceProvider
             // SendEmailVerificationNotification::class,
             MyEventToEventlistener::class,
         ],
+        NotificationOrderToStore::class => [],
     ];
 
     /**

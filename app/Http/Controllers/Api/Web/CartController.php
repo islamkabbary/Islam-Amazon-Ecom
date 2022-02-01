@@ -184,12 +184,24 @@ class CartController extends Controller
                     $notifay = new Notification;
                     $notifay->notificationable_type = "App\Models\Store";
                     $notifay->notificationable_id = $product->store_id;
-                    $notifay->title = 'New Order';
+                    $notifay->titel = 'New Order';
                     $notifay->body = "Product Name"." "."="." ".$product->name." ".'price'." ".'='." ". $procart->price .'qty'." ".'='." ". $procart->qty;
                     $notifay->save();
                     // event(new DeleteAllCartEvent());
                 }
                 event(new NotificationOrderToStore($order,$product->store_id));
+        // $options = array(
+        //     'cluster' => 'eu',
+        //     'useTLS' => true
+        // );
+        // $pusher = new \Pusher\Pusher(
+        //     '33fb164cc6c0a6b54d94',
+        //     'c47e61ab2b4aad6c60dc',
+        //     '1340828',
+        //     $options
+        // );
+        // $pusher->trigger('store_' . $product->store_id, 'New-order', ['relation' => $order->products]);
+
                 DB::commit();
                 return $this->respondCreated(new OrderRresource($order));
             } else {

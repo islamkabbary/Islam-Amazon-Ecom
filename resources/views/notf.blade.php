@@ -17,7 +17,7 @@
             cluster: 'eu'
         });
         var auth = "{{ Auth::guard('store')->user()->id }}";
-        var channel = pusher.subscribe('my-channel_' + auth);
+        var channel = pusher.subscribe('my-channel_'+auth);
         channel.bind('New-order', function(data) {
             data.relation.forEach(element => {
                 var rel = `<div class="dropdown-divider"></div>
