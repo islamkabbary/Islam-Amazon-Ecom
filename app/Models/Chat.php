@@ -13,7 +13,7 @@ class Chat extends Model
     use HasFactory;
 
     protected $fillable = [
-        'massage','sender_id','reciver_id'
+        'message','sender_id','reciver_id'
     ];
 
     protected $cast = [
@@ -24,7 +24,7 @@ class Chat extends Model
     public static function boot(){
         parent::boot();
         self::creating(function($model){
-            $model->sender_id == Auth::id();
+            $model->sender_id = Auth::guard('store')->user()->id;
         });
     }
 
@@ -57,4 +57,9 @@ class Chat extends Model
     {
         return $this->belongsTo(Store::class, 'reciver_id', 'id');
     }
+
+    // public function scopeVilad($q)
+    // {
+    //     $q->where('sender_id',Auth::guard('store')->user()->id)->orWhere('reciver_id',Auth::guard('store')->user()->id);
+    // }
 }

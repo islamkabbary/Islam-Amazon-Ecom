@@ -31,4 +31,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::post('/login-is', [AuthStoreController::class , 'login'])->name('postlogin');
 Route::get('/chat', [ChatController::class , 'chats']);
 Route::get('/chats/{id}', [ChatController::class , 'getUserChat'])->name('chats');
-Route::get('/send-message', [ChatController::class , 'sendMessages'])->name('sendMessages');
+Route::post('/send-message', [ChatController::class , 'sendMessages'])->name('sendMessages');
