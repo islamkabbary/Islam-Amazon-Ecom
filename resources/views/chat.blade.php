@@ -325,7 +325,7 @@
                             @foreach ($chats as $key => $chat)
                                 <li class="chats-for-user" user-id="{{ $chat[0]->sender_id }}"
                                     user-name="{{ $chat[0]->sender->name }}">
-                                    <div class="d-flex bd-highlight">
+                                    <div class="d-flex bd-highlight" style="cursor: pointer">
                                         <div class="img_cont">
                                             <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg"
                                                 class="rounded-circle user_img">
@@ -339,6 +339,7 @@
                                     </div>
                                 </li>
                             @endforeach
+                            <button class="emo">im</button>
                         </ul>
                     </div>
                     <div class="card-footer"></div>
@@ -384,8 +385,9 @@
                             <div class="input-group">
                                 <div class="input-group-append">
                                     <span class="input-group-text attach_btn"><i class="fas fa-paperclip"
-                                            id="file1"></i></span>
-                                    <input type="file" name="" id="file">
+                                            id="file1"></i>
+                                        <input type="file" name="file" id="file">
+                                    </span>
                                 </div>
                                 <textarea id="messageBody" name="message" class="form-control type_msg"
                                     placeholder="Type your message..."></textarea>
@@ -393,6 +395,7 @@
                                     <span class="input-group-text send_btn" id="sendMessage"><i
                                             class="fas fa-location-arrow"></i></span>
                                 </div>
+                                <button class="emo"></button>
                             </div>
                         </form>
                     </div>
@@ -406,6 +409,10 @@
         $("#file1").click(function() {
             $("#file").trigger('click');
         });
+        $('#file').on('change', function() {
+            var val = $(this).val();
+            $(this).siblings('span').text(val);
+        })
         $(document).on('click', '.chats-for-user', function(event) {
             var self = $(this);
             $('#islam').show();
@@ -439,7 +446,7 @@
             })
         });
         $("#sendMessage").on("click", function(e) {
-            $.post('{{ URL::to('send-message') }}', {
+            $.post('{{ URL::to("send-message") }}', {
                 _token: "{{ csrf_token() }}",
                 reciver_id: $('#reciverId').val(),
                 message: $('#messageBody').val(),
@@ -468,13 +475,10 @@
         var channel1 = pusher.subscribe('user_' + auth);
 
         channel1.bind('message', function(data) {
-            // console.log(data)
             if ($('#chatBody').attr('user-id') == 'user_' + data.chat.sender_id) {
                 html = `<div class="d-flex justify-content-start mb-4">
-                        <img style="width: 300px; height: 300px;" class="img_cont_msg" src="` + data.chat.file_path + `">
                                                 <div class="msg_cotainer">
                                                     ` + data.chat.message + `
-                                                    <span class="msg_time_send">` + time + " " + "-" + " " + date + `</span>
                                                 </div>
                                         </div>`
                 $('#chatBody').append(html)

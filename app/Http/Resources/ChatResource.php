@@ -20,6 +20,7 @@ class ChatResource extends JsonResource
             'message' => $this->message,
             'sender_id' => $this->sender_id,
             'reciver_id' => $this->reciver_id,
+            'file_path' => $this->file_path,
             'date' => Carbon::parse($this->created_at)->format('m-d'),
             'time' => Carbon::parse($this->created_at)->format('H:i'),
         ];

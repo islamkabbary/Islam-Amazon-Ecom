@@ -27,7 +27,8 @@ class ChatRequest extends FormRequest
             case 'POST': {
                     return [
                         'reciver_id' => 'integer|exists:stores,id',
-                        'message' => 'required'
+                        'message' => 'sometimes',
+                        'file' => 'sometimes',
                     ];
                 }
 
