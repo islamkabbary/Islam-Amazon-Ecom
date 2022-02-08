@@ -35,12 +35,13 @@ class ChatController extends Controller
         try {
             $chat = Chat::create($request->only(['reciver_id', 'message']));
             if ($request->has('file')) {
+                // dD('y');
                 $file = $request->file('file');
                 $path = 'uplode_file';
-                $file_name = $file->getOriginName() . now()->format('Y-m-dH-i-s') . '.' . $file->extension();
+                $file_name =now()->format('Y-m-dH-i-s') . '.' . $file->extension();
                 $file->move($path, $file_name);
                 $full_path = $path . '/' . $file_name;
-                ChatFile::create([
+                $c = ChatFile::create([
                     'chat_id' => $chat->id,
                     'path' => $full_path
                 ]);

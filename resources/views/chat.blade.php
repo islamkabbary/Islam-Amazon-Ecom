@@ -17,8 +17,9 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js">
     </script>
     {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src=
+    "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+        </script>
     <style>
         body,
         html {
@@ -378,7 +379,7 @@
                     {{-- --- --}}
                     {{-- Send Message --}}
                     <div class="card-footer">
-                        <form action="{{ route('sendMessages') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('sendMessages') }}" method="POST" file="true" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="reciver_id" id="reciverId">
                             <div class="input-group">
@@ -391,7 +392,7 @@
                                 <textarea id="messageBody" name="message" class="form-control type_msg"
                                     placeholder="Type your message..."></textarea>
                                 <div class="input-group-append">
-                                    <button type="button" class="input-group-text send_btn" id="sendMessage"><i
+                                    <button type="submit" class="input-group-text send_btn" id="sendMessage"><i
                                             class="fas fa-location-arrow"></i></button class="">
                                 </div>
                             </div>
@@ -447,15 +448,11 @@
         $("#sendMessage").on("click", function(e) {
             var fd = new FormData();
             var files = $('#file')[0].files[0];
-            // fd.append('file', files);
-            // fd.append('_token', "{{ csrf_token() }}");
-            // fd.append('reciver_id', $('#reciverId').val());
-            // fd.append('message', $('#messageBody').val());
-            $.post('{{ URL::to("send-message") }}', {
-                _token: "{{ csrf_token() }}",
-                reciver_id: $('#reciverId').val(),
-                message: $('#messageBody').val(),
-            }, function(data) {
+            fd.append('_token', "{{ csrf_token() }}");
+            fd.append('reciver_id', $('#reciverId').val());
+            fd.append('message', $('#messageBody').val());
+            fd.append('file', files);
+            $.post('{{ URL::to("send-message") }}', {fd}, function(data) {
                 var today = new Date();
                 var time = today.getHours() + ":" + today.getMinutes();
                 var date = today.getMonth() + '-' + today.getDate();
