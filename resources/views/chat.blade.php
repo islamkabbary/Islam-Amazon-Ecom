@@ -391,8 +391,8 @@
                                 <textarea id="messageBody" name="message" class="form-control type_msg"
                                     placeholder="Type your message..."></textarea>
                                 <div class="input-group-append">
-                                    <span class="input-group-text send_btn" id="sendMessage"><i
-                                            class="fas fa-location-arrow"></i></span>
+                                    <button type="button" class="input-group-text send_btn" id="sendMessage"><i
+                                            class="fas fa-location-arrow"></i></button class="">
                                 </div>
                             </div>
                     </div>
@@ -445,6 +445,12 @@
             })
         });
         $("#sendMessage").on("click", function(e) {
+            var fd = new FormData();
+            var files = $('#file')[0].files[0];
+            // fd.append('file', files);
+            // fd.append('_token', "{{ csrf_token() }}");
+            // fd.append('reciver_id', $('#reciverId').val());
+            // fd.append('message', $('#messageBody').val());
             $.post('{{ URL::to("send-message") }}', {
                 _token: "{{ csrf_token() }}",
                 reciver_id: $('#reciverId').val(),
