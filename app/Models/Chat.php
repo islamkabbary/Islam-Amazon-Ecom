@@ -58,8 +58,8 @@ class Chat extends Model
         return $this->belongsTo(Store::class, 'reciver_id', 'id');
     }
 
-    // public function scopeVilad($q)
-    // {
-    //     $q->where('sender_id',Auth::guard('store')->user()->id)->orWhere('reciver_id',Auth::guard('store')->user()->id);
-    // }
+    public function scopeValid($q)
+    {
+        $q->where('sender_id',Auth::guard('store')->user()->id)->orWhere('reciver_id',Auth::guard('store')->user()->id);
+    }
 }

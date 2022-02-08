@@ -339,7 +339,6 @@
                                     </div>
                                 </li>
                             @endforeach
-                            <button class="emo">im</button>
                         </ul>
                     </div>
                     <div class="card-footer"></div>
@@ -395,14 +394,14 @@
                                     <span class="input-group-text send_btn" id="sendMessage"><i
                                             class="fas fa-location-arrow"></i></span>
                                 </div>
-                                <button class="emo"></button>
                             </div>
-                        </form>
                     </div>
-                    {{-- --- --}}
+                    </form>
                 </div>
+                {{-- --- --}}
             </div>
         </div>
+    </div>
     </div>
     <script>
         $('#islam').hide();
@@ -446,7 +445,7 @@
             })
         });
         $("#sendMessage").on("click", function(e) {
-            $.post('{{ URL::to("send-message") }}', {
+            $.post('{{ URL::to('send-message') }}', {
                 _token: "{{ csrf_token() }}",
                 reciver_id: $('#reciverId').val(),
                 message: $('#messageBody').val(),
