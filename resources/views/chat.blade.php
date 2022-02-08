@@ -445,7 +445,7 @@
             })
         });
         $("#sendMessage").on("click", function(e) {
-            $.post('{{ URL::to('send-message') }}', {
+            $.post('{{ URL::to("send-message") }}', {
                 _token: "{{ csrf_token() }}",
                 reciver_id: $('#reciverId').val(),
                 message: $('#messageBody').val(),
