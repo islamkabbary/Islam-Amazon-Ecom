@@ -425,29 +425,31 @@
                 $('#chatCount').text(data.length + ' Messages')
                 $('#chatBody').html("")
                 var html = "";
-                data.forEach(element => {
-                    if (element.sender_id == self.attr("user-id")) {
-                        html += `<div class="d-flex justify-content-start mb-4">
+                if (data.success == undefined) {
+                    data.forEach(element => {
+                        if (element.sender_id == self.attr("user-id")) {
+                            html += `<div class="d-flex justify-content-start mb-4">
                                         <div class="msg_cotainer">
                                             ` + element.message + `
                                             <span class="msg_time">` + element.time + " " + "-" + " " + element.date + `</span>
                                         </div>
                                 </div>`
-                    } else {
-                        html += `<div class="d-flex justify-content-end mb-4">
+                        } else {
+                            html += `<div class="d-flex justify-content-end mb-4">
                                     <div class="msg_cotainer_send">
                                         ` + element.message + `
                                         <span class="msg_time_send">` + element.time + " " + "-" + " " + element.date + `</span>
                                     </div>
                                 </div>`
-                    }
-                });
+                        }
+                    });
+                }
                 $('#chatBody').append(html)
             })
         });
         $("#sendMessage").on("click", function(e) {
             var data = new FormData();
-            if($('#file')[0].files[0]) data.append('file', $('#file')[0].files[0])
+            if ($('#file')[0].files[0]) data.append('file', $('#file')[0].files[0])
             data.append('_token', "{{ csrf_token() }}")
             data.append('reciver_id', $('#reciverId').val())
             data.append('message', $('#messageBody').val())
