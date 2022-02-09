@@ -82,6 +82,6 @@ class ChatController extends Controller
             '1340828',
             $options
         );
-        $pusher->trigger('user_' . $chat->reciver_id, 'message', ['chat' => $chat]);
+        $pusher->trigger('user_' . $chat->reciver_id, 'message', ['chat' => $chat , 'path' => $chat->chatFils ]);
     }
 }
