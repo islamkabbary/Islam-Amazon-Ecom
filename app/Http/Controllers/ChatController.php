@@ -72,6 +72,7 @@ class ChatController extends Controller
 
     public function sendMessagepusher($chat)
     {
+        // dd($chat->chatFils[0]->full_path);
         $options = array(
             'cluster' => 'eu',
             'useTLS' => true
@@ -82,6 +83,6 @@ class ChatController extends Controller
             '1340828',
             $options
         );
-        $pusher->trigger('user_' . $chat->reciver_id, 'message', ['chat' => $chat , 'path' => $chat->chatFils ]);
+        $pusher->trigger('user_' . $chat->reciver_id, 'message', ['chat' => $chat , 'path' => $chat->chatFils[0] ]);
     }
 }

@@ -427,8 +427,7 @@
                 if (data.success == undefined) {
                     data.forEach(element => {
                         if (element.sender_id == self.attr("user-id")) {
-                            // console.log(element.file_path.length !==0);
-                            if (element.file_path) {
+                            if (element.file_path.length !== 0 && element.message !== null) {
                                 html += `<div class="d-flex justify-content-start mb-4">`
                                 element.file_path.forEach(image => {
                                     html +=
@@ -436,38 +435,52 @@
                                         image.full_path + `">`
                                 })
                                 html += ` <div class="msg_cotainer">
-                                            ` + element.message + `
-                                            <span class="msg_time">` + element.time + " " + "-" + " " + element.date + `</span>
-                                        </div>
-                                </div>`
-                            } else {
-                                html += `<div class="d-flex justify-content-start mb-4">
-                                    <div class="msg_cotainer">
                                         ` + element.message + `
-                                        <span class="msg_time_send">` + element.time + " " + "-" + " " + element.date + `</span>
+                                        <span class="msg_time">` + element.time + " " + "-" + " " + element.date + `</span>
                                     </div>
-                                </div>`
+                            </div>`
+                            } else if (element.message !== null) {
+                                html += ` <div class="d-flex justify-content-start mb-4">
+                                <div class="msg_cotainer">
+                                        ` + element.message + `
+                                        <span class="msg_time">` + element.time + " " + "-" + " " + element.date + `</span>
+                                    </div>
+                            </div>`
+                            } else {
+                                html += `<div class="d-flex justify-content-start mb-4">`
+                                element.file_path.forEach(image => {
+                                    html +=
+                                        `<img style="width: 300px; height: 300px;" class="img_cont_msg" src="` +
+                                        image.full_path + `">`
+                                })
                             }
                         } else {
-                            if (element.file_path) {
+                            if (element.file_path.length !== 0 && element.message !== null) {
                                 html += `<div class="d-flex justify-content-end mb-4">`
                                 element.file_path.forEach(image => {
                                     html +=
                                         `<img style="width: 300px; height: 300px;" class="img_cont_msg" src="` +
                                         image.full_path + `">`
                                 })
-                                html += ` <div class="msg_cotainer">
-                                            ` + element.message + `
-                                            <span class="msg_time">` + element.time + " " + "-" + " " + element.date + `</span>
-                                        </div>
-                                </div>`
-                            } else {
-                                html += `<div class="d-flex justify-content-end mb-4">
-                                    <div class="msg_cotainer_send">
+                                html += ` <div class="msg_cotainer_send">
                                         ` + element.message + `
                                         <span class="msg_time_send">` + element.time + " " + "-" + " " + element.date + `</span>
                                     </div>
-                                </div>`
+                            </div>`
+                            } else if (element.message !== null) {
+                                html += `<div class="d-flex justify-content-end mb-4">
+                                 <div class="msg_cotainer_send">
+                                        ` + element.message + `
+                                        <span class="msg_time_send">` + element.time + " " + "-" + " " + element.date + `</span>
+                                    </div>
+                            </div>`
+                            } else {
+                                html += `<div class="d-flex justify-content-end mb-4">`
+                                element.file_path.forEach(image => {
+                                    html +=
+                                        `<img style="width: 300px; height: 300px;" class="img_cont_msg" src="` +
+                                        image.full_path + `">`
+                                })
                             }
                         }
                     });
@@ -522,11 +535,10 @@
         });
         var auth = "{{ Auth::guard('store')->user()->id }}"
         var channel1 = pusher.subscribe('user_' + auth);
-
         channel1.bind('message', function(data) {
             if ($('#chatBody').attr('user-id') == 'user_' + data.chat.sender_id) {
                 html = `<div class="d-flex justify-content-start mb-4">
-                    <img style="width: 300px; height: 300px;" class="img_cont_msg" src="` + data.chat + `">
+                    <img style="width: 300px; height: 300px;" class="img_cont_msg" src="` + data.path.full_path + `">
                                                 <div class="msg_cotainer">
                                                     ` + data.chat.message + `
                                                 </div>
