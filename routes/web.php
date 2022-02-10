@@ -1,9 +1,13 @@
 <?php
 
+use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Auth\AuthStoreController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Api\Auth\AuthStoreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +23,18 @@ use App\Http\Controllers\ChatController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/index', function () {
+    $products = Product::all();
+    return view('index',compact('products'));
+});
+
+Route::get('/checkout/{id}', [PaymentController::class, 'checkout'])->name('checkout');
+Route::get('/stripe/{id}', [PaymentController::class, 'stripe'])->name('stripe');
+
+Route::get('/cart', function () {
+    $carts = Cart::all();
+    return view('cart',compact('carts'));
+})->name('cart');
 
 Route::get('/n', function () {
     $notifications = Auth::guard('store')->user()->notifications;
@@ -27,7 +43,7 @@ Route::get('/n', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('/login-is', [AuthStoreController::class , 'login'])->name('postlogin');
 Route::get('/chat', [ChatController::class , 'chats']);
 Route::get('/chats/{id}', [ChatController::class , 'getUserChat'])->name('chats');
