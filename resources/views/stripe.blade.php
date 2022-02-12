@@ -97,7 +97,7 @@
             <div class="row main">
                 <div class="col-12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Credit card checkout</span></div>
             </div>
-            <form class="form-card" method="post" action="{{URL::to('Page')}}">
+            <form class="form-card" method="post" action="{{route('payment')}}">
                 @csrf
                 <input type="hidden" name="product" value="{{$product->id}}">
                 <div class="row">
@@ -118,7 +118,7 @@
                         <div class="form-group"> <input type="text" name="year" class="form-control p-0" id="expdate" required><label class="form-control-placeholder p-0" for="expdate">Year</label> </div>
                     </div>
                     <div class="col-sm-4 col-12">
-                        <div class="form-group"> <input type="password" name="cvv" class="form-control p-0" id="passw" required><label class="form-control-placeholder p-0" for="passw">CVV</label> </div>
+                        <div class="form-group"> <input type="password" name="cvc" class="form-control p-0" id="passw" required><label class="form-control-placeholder p-0" for="passw">CVV</label> </div>
                     </div>
                 </div>
                 <div class="row lrow mt-4 mb-3">

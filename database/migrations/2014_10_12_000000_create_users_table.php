@@ -18,6 +18,9 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->foreignId('price_id')->nullable()->constrained('price_plans');
+            $table->string('stripe_id')->nullable();
+            $table->string('plan_stripe_id')->nullable();
             $table->string('password');
             $table->string('forget_code')->nullable();
             $table->string('code_expire')->nullable();
