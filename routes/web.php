@@ -31,7 +31,6 @@ Route::get('/index', function () {
 Route::get('/checkout/{id}', [PaymentController::class, 'checkout'])->name('checkout');
 Route::get('/stripe/{id}', [PaymentController::class, 'stripe'])->name('stripe');
 Route::post('/payment', [PaymentController::class, 'charge'])->name('payment');
-Route::get('/ppppp', [PaymentController::class, 'ppppp']);
 
 Route::get('/cart', function () {
     $carts = Cart::all();

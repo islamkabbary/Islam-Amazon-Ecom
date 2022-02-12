@@ -16,7 +16,6 @@
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js">
     </script>
-    {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
     </script>
     <style>
@@ -425,23 +424,67 @@
                 $('#chatCount').text(data.length + ' Messages')
                 $('#chatBody').html("")
                 var html = "";
-                data.forEach(element => {
-                    if (element.sender_id == self.attr("user-id")) {
-                        html += `<div class="d-flex justify-content-start mb-4">
-                                        <div class="msg_cotainer">
-                                            ` + element.message + `
-                                            <span class="msg_time">` + element.time + " " + "-" + " " + element.date + `</span>
-                                        </div>
-                                </div>`
-                    } else {
-                        html += `<div class="d-flex justify-content-end mb-4">
-                                    <div class="msg_cotainer_send">
+                if (data.success == undefined) {
+                    data.forEach(element => {
+                        if (element.sender_id == self.attr("user-id")) {
+                            if (element.file_path.length !== 0 && element.message !== null) {
+                                html += `<div class="d-flex justify-content-start mb-4">`
+                                element.file_path.forEach(image => {
+                                    html +=
+                                        `<img style="width: 300px; height: 300px;" class="img_cont_msg" src="` +
+                                        image.full_path + `">`
+                                })
+                                html += ` <div class="msg_cotainer">
+                                        ` + element.message + `
+                                        <span class="msg_time">` + element.time + " " + "-" + " " + element.date + `</span>
+                                    </div>
+                            </div>`
+                            } else if (element.message !== null) {
+                                html += ` <div class="d-flex justify-content-start mb-4">
+                                <div class="msg_cotainer">
+                                        ` + element.message + `
+                                        <span class="msg_time">` + element.time + " " + "-" + " " + element.date + `</span>
+                                    </div>
+                            </div>`
+                            } else {
+                                html += `<div class="d-flex justify-content-start mb-4">`
+                                element.file_path.forEach(image => {
+                                    html +=
+                                        `<img style="width: 300px; height: 300px;" class="img_cont_msg" src="` +
+                                        image.full_path + `">`
+                                })
+                            }
+                        } else {
+                            if (element.file_path.length !== 0 && element.message !== null) {
+                                html += `<div class="d-flex justify-content-end mb-4">`
+                                element.file_path.forEach(image => {
+                                    html +=
+                                        `<img style="width: 300px; height: 300px;" class="img_cont_msg" src="` +
+                                        image.full_path + `">`
+                                })
+                                html += ` <div class="msg_cotainer_send">
                                         ` + element.message + `
                                         <span class="msg_time_send">` + element.time + " " + "-" + " " + element.date + `</span>
                                     </div>
-                                </div>`
-                    }
-                });
+                            </div>`
+                            } else if (element.message !== null) {
+                                html += `<div class="d-flex justify-content-end mb-4">
+                                 <div class="msg_cotainer_send">
+                                        ` + element.message + `
+                                        <span class="msg_time_send">` + element.time + " " + "-" + " " + element.date + `</span>
+                                    </div>
+                            </div>`
+                            } else {
+                                html += `<div class="d-flex justify-content-end mb-4">`
+                                element.file_path.forEach(image => {
+                                    html +=
+                                        `<img style="width: 300px; height: 300px;" class="img_cont_msg" src="` +
+                                        image.full_path + `">`
+                                })
+                            }
+                        }
+                    });
+                }
                 $('#chatBody').append(html)
             })
         });
@@ -458,12 +501,26 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    html = `<div class="d-flex justify-content-end mb-4">
+                    var html = "";
+                    if (response.message && response.file_path.length !== 0) {
+                        html += `<div class="d-flex justify-content-end mb-4">
+                                <img style="width: 300px; height: 300px;" class="img_cont_msg" src="` + response
+                            .file_path[0].full_path + `">
                                             <div class="msg_cotainer_send">
                                                 ` + response.message + `
                                                 <span class="msg_time_send">8:55 AM, Today</span>
-
+                                            </div>`
+                    } else if (response.message) {
+                        html += `<div class="d-flex justify-content-end mb-4">
+                        <div class="msg_cotainer_send">
+                            ` + response.message + `
+                            <span class="msg_time_send">8:55 AM, Today</span>
                         </div>`
+                    } else {
+                        html += `<div class="d-flex justify-content-end mb-4">
+                        <img style="width: 300px; height: 300px;" class="img_cont_msg" src="` + response.file_path[0]
+                            .full_path + `">`
+                    }
                     $('#chatBody').append(html)
                     $('#messageBody').val(" ")
                 },
@@ -478,10 +535,10 @@
         });
         var auth = "{{ Auth::guard('store')->user()->id }}"
         var channel1 = pusher.subscribe('user_' + auth);
-
         channel1.bind('message', function(data) {
             if ($('#chatBody').attr('user-id') == 'user_' + data.chat.sender_id) {
                 html = `<div class="d-flex justify-content-start mb-4">
+                    <img style="width: 300px; height: 300px;" class="img_cont_msg" src="` + data.path.full_path + `">
                                                 <div class="msg_cotainer">
                                                     ` + data.chat.message + `
                                                 </div>

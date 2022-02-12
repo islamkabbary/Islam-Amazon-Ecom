@@ -27,6 +27,7 @@ class PaymentController extends Controller
             $info_cart =  $request->validated();
             $product = Product::find($request->product);
             $info_cart['price'] = $product->price;
+            // dd($info_cart);
             $stripe = new StripeHelper();
             return $stripe->Charge($info_cart);
         }
