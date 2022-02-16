@@ -173,7 +173,7 @@ class CartController extends Controller
                 $order->total = 0;
                 $order->paid = 0;
                 $order->note = $request->note ?? 'note';
-                $order->coupon_id =  $coupon->id ??null;
+                $order->coupon_id =  $coupon->id ?? null;
                 $order->driver_id = null;
                 $order->save();
                 foreach ($procarts as $procart) {
@@ -185,22 +185,22 @@ class CartController extends Controller
                     $notifay->notificationable_type = "App\Models\Store";
                     $notifay->notificationable_id = $product->store_id;
                     $notifay->titel = 'New Order';
-                    $notifay->body = "Product Name"." "."="." ".$product->name." ".'price'." ".'='." ". $procart->price .'qty'." ".'='." ". $procart->qty;
+                    $notifay->body = "Product Name" . " " . "=" . " " . $product->name . " " . 'price' . " " . '=' . " " . $procart->price . 'qty' . " " . '=' . " " . $procart->qty;
                     $notifay->save();
-                    // event(new DeleteAllCartEvent());
+                    event(new DeleteAllCartEvent());
                 }
-                event(new NotificationOrderToStore($order,$product->store_id));
-        // $options = array(
-        //     'cluster' => 'eu',
-        //     'useTLS' => true
-        // );
-        // $pusher = new \Pusher\Pusher(
-        //     '33fb164cc6c0a6b54d94',
-        //     'c47e61ab2b4aad6c60dc',
-        //     '1340828',
-        //     $options
-        // );
-        // $pusher->trigger('store_' . $product->store_id, 'New-order', ['relation' => $order->products]);
+                event(new NotificationOrderToStore($order, $product->store_id));
+                $options = array(
+                    'cluster' => 'eu',
+                    'useTLS' => true
+                );
+                $pusher = new \Pusher\Pusher(
+                    '33fb164cc6c0a6b54d94',
+                    'c47e61ab2b4aad6c60dc',
+                    '1340828',
+                    $options
+                );
+                $pusher->trigger('store_' . $product->store_id, 'New-order', ['relation' => $order->products]);
 
                 DB::commit();
                 return $this->respondCreated(new OrderRresource($order));
@@ -209,7 +209,7 @@ class CartController extends Controller
             }
         } catch (\Throwable $th) {
             DB::rollBack();
-            return $this->respondError($th->getMessage().$th->getLine() . $th->getFile());
+            return $this->respondError($th->getMessage() . $th->getLine() . $th->getFile());
         }
     }
 

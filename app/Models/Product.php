@@ -25,6 +25,7 @@ class Product extends Model
         'qty',
         'category_id',
         'store_id',
+        'product_stripe_id',
     ];
 
     /**

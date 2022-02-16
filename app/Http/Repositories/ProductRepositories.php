@@ -2,17 +2,21 @@
 
 namespace App\Http\Repositories;
 
-use App\Http\Filter\FilterHelper;
-use App\Http\Interfaces\ProductInterfaces;
 use App\Models\Product;
+use App\Trait\ApiPagination;
 use F9Web\ApiResponseHelpers;
+use App\Http\Filter\FilterHelper;
 use Illuminate\Support\Facades\DB;
+use App\Events\CreateProductInStrip;
 use App\Http\Resources\ProductResource;
-use Illuminate\Support\Facades\Redis;
+use App\Events\DeleteProductInStripeEvent;
+use App\Events\UpdateProductInStripeEvent;
+use App\Http\Interfaces\ProductInterfaces;
 
 class ProductRepositories implements ProductInterfaces 
 {
     use ApiResponseHelpers;
+    use ApiPagination;
 
     public function model()
     {
@@ -22,8 +26,9 @@ class ProductRepositories implements ProductInterfaces
     public function showAllProduct()
     {
         try {
-            $product = Product::all();
-            return $this->respondWithSuccess(ProductResource::collection($product));
+            $product = Product::paginate(1);
+            $re      = ProductResource::collection($product); 
+            return $this->getPaginationData($product,$re);
         } catch (\Throwable $th) {
             return $this->respondError($th->getMessage() . $th->getFile());
         }
@@ -34,6 +39,7 @@ class ProductRepositories implements ProductInterfaces
         DB::beginTransaction();
         try {
             $product = Product::create($request->validated());
+            // event(new CreateProductInStrip($product));
             DB::commit();
             return $this->respondCreated(new ProductResource($product));
         } catch (\Throwable $th) {
@@ -54,19 +60,26 @@ class ProductRepositories implements ProductInterfaces
 
     public function updateProduct($request, $id)
     {
+        DB::beginTransaction();
         try {
             $product = Product::findOrFail($id);
             $product->update($request->validated());
+            event(new UpdateProductInStripeEvent($product));
+            DB::commit();
             return $this->respondWithSuccess(new ProductResource($product));
         } catch (\Throwable $th) {
+            DB::rollBack();
             return $this->respondError($th->getMessage());
         }
     }
 
     public function deleteProduct($id)
     {
+        DB::beginTransaction();
         try {
             $product = Product::findOrFail($id);
+            event(new DeleteProductInStripeEvent($product));
+            DB::commit();
             $product->delete();
             return $this->respondError('Product Deleted Successfully');
         } catch (\Throwable $th) {

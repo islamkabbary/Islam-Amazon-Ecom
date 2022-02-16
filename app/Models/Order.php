@@ -27,12 +27,12 @@ class Order extends Model
         'driver_id',
     ];
 
-    public static function boot(){
-        parent::boot();
-        self::creating(function($model){
-            $model->user_id = Auth::id();
-        });
-    }
+    // public static function boot(){
+    //     parent::boot();
+    //     self::creating(function($model){
+    //         $model->user_id = Auth::id();
+    //     });
+    // }
     /**
      * Get the driver that owns the Order
      *

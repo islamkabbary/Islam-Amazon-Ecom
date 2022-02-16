@@ -8,6 +8,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Api\Auth\AuthStoreController;
+use App\Http\Controllers\PlanController;
 
 /*
 |--------------------------------------------------------------------------

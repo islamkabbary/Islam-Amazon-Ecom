@@ -29,7 +29,6 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="order_box">
-                          {{$product}}
                             <h2>Your Order</h2>
                             <ul class="list">
                                 <li>

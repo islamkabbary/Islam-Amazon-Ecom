@@ -19,6 +19,8 @@ class CreateProductsTable extends Migration
             $table->decimal('price');
             $table->text('description');
             $table->Integer('qty');
+            $table->string('product_stripe_id')->nullable();
+            $table->string('price_product_stripe_id')->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('store_id')->constrained('stores')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

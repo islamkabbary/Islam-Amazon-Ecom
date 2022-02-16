@@ -16,16 +16,16 @@ class Driver extends Authenticatable implements JWTSubject
 {
     use HasFactory;
     
-    public static function boot(){
-        parent::boot();
-        self::creating(function($model){
-            $model->store_id = Auth::id();
-        });
-    }
+    // public static function boot(){
+    //     parent::boot();
+    //     self::creating(function($model){
+    //         $model->store_id = Auth::id();
+    //     });
+    // }
 
-    public function setPasswordAttribute($value){
-        return $this->attributes['password'] = Hash::make($value);
-    }
+    // public function setPasswordAttribute($value){
+    //     return $this->attributes['password'] = Hash::make($value);
+    // }
 
     protected $fillable =['name','email','password','location','store_id'];
     public function getJWTIdentifier()

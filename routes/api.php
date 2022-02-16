@@ -2,15 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Api\Web\CartController;
+use App\Http\Controllers\Api\Admin\DriverController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Auth\AuthUserController;
 use App\Http\Controllers\Api\Admin\CategoryController;
-use App\Http\Controllers\Api\Admin\DriverController;
 use App\Http\Controllers\Api\Auth\AuthAdminController;
 use App\Http\Controllers\Api\Auth\AuthStoreController;
 use App\Http\Controllers\Api\Auth\AuthDriverController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserPlanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,12 +48,11 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     //Categories
     Route::apiResource('category', CategoryController::class);
     //Products
-    Route::apiResource('product', ProductController::class);
-
+    
     //Driver
     Route::apiResource('driver', DriverController::class);
     Route::apiResource('order', OrderController::class);
-
+    
     Route::post('check-out', [CartController::class, "checkOut"]);
     Route::post('coupon-in-order', [CartController::class, "couponInOrder"]);
 });
@@ -60,3 +61,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
 Route::apiResource('cart', CartController::class );
 Route::get('make', [CartController::class,'make']);
+Route::apiResource('plan', PlanController::class );
+Route::post('subscription-plan',[UserPlanController::class ,'subscriptionUserToPlan']);
+
+Route::apiResource('products', ProductController::class);

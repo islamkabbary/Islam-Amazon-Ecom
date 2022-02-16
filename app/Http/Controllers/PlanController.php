@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use App\Http\Repositories\PlanRepositories;
 use Illuminate\Http\Request;
+use App\Http\Requests\PlanRequest;
 
 class PlanController extends Controller
 {
+    private $planRepositories;
+
+    public function __construct(PlanRepositories $planRepositories)
+    {
+        $this->planRepositories = $planRepositories;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +22,7 @@ class PlanController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->planRepositories->plans(Plan::all());
     }
 
     /**
@@ -33,9 +31,9 @@ class PlanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PlanRequest $request)
     {
-        //
+        return $this->planRepositories->addPlan($request->validated());
     }
 
     /**
@@ -50,26 +48,15 @@ class PlanController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Plan  $plan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Plan $plan)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Plan  $plan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Plan $plan)
+    public function update(PlanRequest $request,Plan $plan)
     {
-        //
+        return $this->planRepositories->updatePlan($request->validated(),$plan);
     }
 
     /**
